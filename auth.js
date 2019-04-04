@@ -32,6 +32,8 @@ module.exports = function() {
     },
     authenticate: () => {
       return passport.authenticate('jwt')
-    }
+    },
+    // TODO: move the secret into an environment variable 
+    secret: params.secretOrKey
   }
 }
