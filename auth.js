@@ -7,8 +7,8 @@ const JwtStrategy = passportJWT.Strategy;
 const UserInterface = require('./interfaces/user');
 
 const params = {
-  secret: 'fsE3K4l8InmD2o',
-  requestJWT: ExtractJwt.fromAuthHeaderAsBearerToken('jwt')
+  secretOrKey: 'fsE3K4l8InmD2o',
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('jwt')
 };
 
 module.exports = function() {
