@@ -5,6 +5,7 @@ var _ = require('lodash');
 var UserInterface = require('../interfaces/user');
 var ResponseHelper = require('../helpers/ResponseHelper');
 var auth = require('../auth')();
+var jwt = require('jwt-simple');
 
 const saltRounds = 12;
 
@@ -33,7 +34,11 @@ userRoute.post('/', (request, response) => {
     user.password = null;
     delete user.password;
 
-    response.json(ResponseHelper.success(user));
+    const token = jwt.encode({
+      id: user._id
+    }, auth.secret);
+
+    response.json(ResponseHelper.success({ user, token }));
   })
   .catch((err) => response.json(ResponseHelper.error(err)));
 });
@@ -63,7 +68,13 @@ userRoute.post('/login', (request, response) => {
       response.json(ResponseHelper.error({ message: 'Incorrect Password' }));
     }
   })
-  .then((user) => response.json(ResponseHelper.success(user)))
+  .then((user) => {
+    const token = jwt.encode({
+      id: user._id
+    }, auth.secret);
+
+    response.json(ResponseHelper.success({ user, token }));
+  })
   .catch((err) => response.json(ResponseHelper.error(err)));
 });
 
